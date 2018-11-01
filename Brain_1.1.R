@@ -1,4 +1,4 @@
-library(pdftools)
+library(pdftools)# read pdf need poppler install
 library(readxl)
 library(dplyr) #data manipulation
 library(ggplot2) #visualizations
@@ -16,7 +16,11 @@ library (SnowballC) #word stemming algorithm
 myFile <- file.choose()  # choose that file in csv format
 
 txt <- pdf_text(myFile)
-txt <- data_frame(txt)
+#txt <- data_frame(txt)
+
+txt <- str_split(txt, '\n')
+
+txt[1]
 
 my_stopwords <- data_frame(word = c(as.character(1:10),
                                     "1", "2", "3", "ee","4","5","6","7","8","9","10",
