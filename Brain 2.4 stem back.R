@@ -4,10 +4,6 @@ rm(list=ls(all=TRUE))
 # Set Seed
 set.seed(123)
 
-
-
-
-
 #install.packages("wordcloud")
 ## Load Library
 library(readxl) #read exls
@@ -24,6 +20,10 @@ library(ggraph) # Create Histogram
 library(stringr) # remove number
 
 
+#######################################################################
+
+
+
 
 ## Load Data
 # (Place Your Code for loading the data) 
@@ -31,6 +31,10 @@ myFile <- file.choose()  # choose that file in csv format
 metadata_a <- read_xlsx(myFile) 
 #View(Data)
 names(metadata_a)
+
+
+
+########################################################################
 
 #metadata_a <- as.character(metadata_a)
 #class(metadata_a)
@@ -173,18 +177,18 @@ desc_word_united %>%
   xlab(NULL)+
   coord_flip()
 
-#plot the Bars
-desc_word_united <- desc_word_pairs %>%
-  unite(word, item1, item2, sep = " ")
-#desc_word_united
-desc_word_united %>%
-  mutate(word = reorder(word, n))%>%
-  filter(n>=10)%>%
-  top_n(20)%>%
-  ggplot(aes(word, n))+
-  geom_col()+
-  xlab(NULL)+
-  coord_flip()
+##plot the Bars
+#desc_word_united <- desc_word_pairs %>%
+#  unite(word, item1, item2, sep = " ")
+##desc_word_united
+#desc_word_united %>%
+#  mutate(word = reorder(word, n))%>%
+#  filter(n>=10)%>%
+#  top_n(20)%>%
+#  ggplot(aes(word, n))+
+#  geom_col()+
+#  xlab(NULL)+
+#  coord_flip()
 
 
 
@@ -210,13 +214,49 @@ desc_word_pairs %>%
 ################################
 ###########################################################
 
+
+
+
+
+
+
 ##Post processing
+
+andeavor_desc_post <- andeavor_desc %>%
+  unnest_tokens(word, desc) %>%
+  anti_join(stop_words)%>%
+  filter(!str_detect(word, "^[0-9]*$")) %>% # remove numbers
+  anti_join(my_stopwords)
+#%>%
+#  anti_join(url_words) %>%
+#  mutate(word = SnowballC::wordStem(word))  # word stem
+
+
+desc_word_pairs_post <- andeavor_desc_post %>%
+  pairwise_count(word, id, sort = TRUE, upper = FALSE)
+desc_word_pairs_post
+
+
+#plot of description
+set.seed(234)
+desc_word_pairs_post %>%
+  top_n(50)%>%
+  filter(n >=5) %>%
+  graph_from_data_frame()%>%
+  ggraph(layout = "fr") +
+  geom_edge_link(aes(edge_alpha = n, edge_width = n), edge_colour = "cyan4") +
+  geom_node_point(size = 2) +
+  geom_node_text(aes(label = name), repel = TRUE,
+                 point.padding = unit(0.1, "lines")) +
+  theme_void()
+
+
 write.csv(desc_word_pairs, "desc_word_pairs.csv", row.names = FALSE)
 desc_word_pairs <- read.csv(file="desc_word_pairs.csv", header=TRUE, sep=",")
 desc_word_pairs
 
 
-#####################################################
+###########################################################
 ##################################
 
 #plot the Bars
