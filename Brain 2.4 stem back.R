@@ -248,10 +248,10 @@ desc_word_pairs_post %>%
                  point.padding = unit(0.1, "lines")) +
   theme_void()
 
-write.csv(desc_word_pairs_stem, "desc_word_pairs_stem.csv", row.names = FALSE)
+write.csv(desc_word_pairs_stem, "desc_word_pairs_with_stem.csv", row.names = FALSE)
 
 
-modFile <- file.choose()  # choose that file in csv format
+modFile <- file.choose()  # choose that file modified
 
 desc_word_pairs_mod <- read.csv(file=modFile, header=TRUE, sep=",")
 desc_word_pairs_mod
@@ -269,8 +269,8 @@ desc_word_united_mod <- desc_word_pairs_mod %>%
 #desc_word_united
 desc_word_united_mod %>%
   mutate(word = reorder(word, n))%>%
-  filter(n>=10)%>%
-  top_n(10)%>%
+  filter(n>=15)%>%
+  top_n(20)%>%
   ggplot(aes(word, n))+
   geom_col()+
   xlab(NULL)+
@@ -294,8 +294,8 @@ desc_word_united_mod %>%
 #plot of description
 set.seed(234)
 desc_word_pairs_mod %>%
-  top_n(50)%>%
-  filter(n >=5) %>%
+  top_n(30)%>%
+  filter(n >=10) %>%
   graph_from_data_frame()%>%
   ggraph(layout = "fr") +
   geom_edge_link(aes(edge_alpha = n, edge_width = n), edge_colour = "cyan4") +
@@ -317,7 +317,7 @@ desc_word_pairs_mod %>%
 
 ########################################################### output matrix
 
-#output matrix
+#output matrix for Syed
 write.csv(desc_word_united_mod, "desc_word_united_mod.csv", row.names = FALSE)
 
 
