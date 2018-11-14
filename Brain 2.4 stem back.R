@@ -248,7 +248,15 @@ desc_word_pairs_post %>%
                  point.padding = unit(0.1, "lines")) +
   theme_void()
 
+ggsave("plot.png")
+
 write.csv(desc_word_pairs_stem, "desc_word_pairs_with_stem.csv", row.names = FALSE)
+
+
+
+
+
+
 
 
 modFile <- file.choose()  # choose that file modified
