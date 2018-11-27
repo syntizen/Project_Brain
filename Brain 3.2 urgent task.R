@@ -337,8 +337,8 @@ desc_word_united_mod %>%
 #plot of description
 set.seed(234)
 desc_word_pairs_mod %>%
-  top_n(50)%>%
-  filter(n >=10) %>%
+  top_n(200)%>%
+  filter(n >=2) %>%
   graph_from_data_frame()%>%
   ggraph(layout = "fr") +
   geom_edge_link(aes(edge_alpha = n, edge_width = n), edge_colour = "cyan4") +
