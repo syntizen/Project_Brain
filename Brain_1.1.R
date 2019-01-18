@@ -1,3 +1,8 @@
+# Remove Everything from the R directory
+rm(list=ls(all=TRUE))
+
+# Set Seed
+set.seed(123)
 library(pdftools)
 library(readxl)
 library(dplyr) #data manipulation
@@ -36,5 +41,12 @@ txt %>%
   xlab(NULL)+
   coord_flip()
 
-txt %>%
-pairwise_count(word, sort = TRUE, upper = FALSE)
+
+txt[1]
+#txt <- as_tibble(txt)
+
+#pairwise_count(word1,word2 sort = TRUE, upper = FALSE)
+#txt
+word_pairs <- txt %>%
+  pairwise_count(word, txt,n)
+word_pairs
